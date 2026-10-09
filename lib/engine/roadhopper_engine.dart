@@ -337,10 +337,10 @@ class RoadHopperEngine extends ChangeNotifier {
     row = ny;
     hopT = 0;
     hops++;
-    _dust(nx.toDouble(), ny);
+    _dust(nx.toDouble(), ny.toDouble());
     if (dy < 0) {
       score += 10;
-      _floater(nx.toDouble(), ny, '+10', 0xFFFFD43B);
+      _floater(nx.toDouble(), ny.toDouble(), '+10', 0xFFFFD43B);
     }
     _emit(HopperEvent.hop);
     if (row == 0) _reachHome();
