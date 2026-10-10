@@ -58,7 +58,7 @@ class HopperSettings extends ChangeNotifier {
   int customHopperBelly = 0xFFD3F9D8;
   int difficulty = 1; // 0 stroll, 1 street, 2 rush hour (pro)
   int mode = 0; // 0 classic, 1 endless, 2 score attack
-  bool isPro = false;
+  bool isPro = true; // everything unlocked — no Pro version
 
   int bestClassic = 0;
   int bestEndless = 0;

@@ -41,7 +41,6 @@ class _MenuScreenState extends State<MenuScreen> {
       if (mounted) setState(() {});
     });
     _store.lastThanks.addListener(_onThanks);
-    _store.proPurchased.addListener(_onPro);
     _nameCtrl.text = _s.playerName;
     _nameFocus.addListener(_onNameFocus);
   }
@@ -79,18 +78,10 @@ class _MenuScreenState extends State<MenuScreen> {
     _store.lastThanks.value = null;
   }
 
-  void _onPro() {
-    if (_store.proPurchased.value && mounted) {
-      _s.setPro(true);
-      _store.proPurchased.value = false;
-      setState(() {});
-    }
-  }
-
+  
   @override
   void dispose() {
     _store.lastThanks.removeListener(_onThanks);
-    _store.proPurchased.removeListener(_onPro);
     _store.dispose();
     _nameFocus.removeListener(_onNameFocus);
     _nameFocus.dispose();
