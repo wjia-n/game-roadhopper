@@ -527,7 +527,7 @@ class HopperStyles {
     ),
     HopperStyleDef(
       id: 7,
-      name: 'Ninja Frog',
+      name: 'Shadow Frog',
       body: Color(0xFF343A40),
       belly: Color(0xFF868E96),
       pattern: 'mask',

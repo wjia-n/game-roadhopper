@@ -948,7 +948,7 @@ class _HopperPainter extends CustomPainter {
         }
         break;
       case 'mask':
-        // Ninja headband.
+        // Stealth headband.
         canvas.drawRRect(
             RRect.fromRectAndRadius(
                 Rect.fromCenter(

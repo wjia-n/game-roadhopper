@@ -18,6 +18,9 @@ import 'package:audioplayers/audioplayers.dart';
 ///   resumes exactly where it left off instead of restarting or dying.
 /// - Every public method catches player errors; audio can never crash the app.
 class HopperAudio {
+  /// Per-game pitch character (roadhopper): 0.81x. Makes SFX unique.
+  static const double _pitchMul = 0.810;
+
   static const int _rate = 22050;
   final AudioPlayer _sfx = AudioPlayer();
   final AudioPlayer _music = AudioPlayer();
@@ -104,6 +107,8 @@ class HopperAudio {
 
   List<double> _tone(double freq, double secs,
       {double freqEnd = 0, double attack = 0.02, double harmonics = 0.25}) {
+    freq *= _pitchMul;
+    freqEnd *= _pitchMul;
     final n = (_rate * secs).round();
     final out = List<double>.filled(n, 0);
     for (int i = 0; i < n; i++) {
@@ -187,12 +192,12 @@ class HopperAudio {
       _cache.putIfAbsent(key, () => _wav(build()));
 
   Uint8List _menuBytes() => _clip('music_menu', () {
-        // Lazy sunny-day porch swing: C – Am – F – G, 16s loop.
+        // A# 0 – 5 – 4 – 3 warm pad, 16s loop. Unique to roadhopper.
         final seq = [
-          [261.63, 329.63, 392.0], // C
-          [220.0, 261.63, 329.63], // Am
-          [174.61, 220.0, 261.63], // F
-          [196.0, 246.94, 392.0], // G
+          [233.08, 293.66, 349.23],
+          [391.99, 466.16, 587.32],
+          [349.23, 440.00, 523.25],
+          [311.12, 391.99, 466.16]
         ];
         final out = <double>[];
         for (final chord in seq) {
@@ -201,30 +206,25 @@ class HopperAudio {
         return out;
       });
 
+
   Uint8List _gameBytes() => _clip('music_game', () {
-        // Bouncy road-trip rhythm: walking bass + plucked melody, 12s loop.
-        final bassLine = [130.81, 130.81, 146.83, 130.81, 164.81, 146.83];
-        final melody = [523.25, 587.33, 659.25, 587.33, 523.25, 440.0];
-        final n = (_rate * 12).round();
-        final out = List<double>.filled(n, 0);
-        final steps = 24; // half-second steps
-        for (int s = 0; s < steps; s++) {
-          final start = (n * s / steps).round();
-          final bass = _tone(bassLine[s % bassLine.length], 0.42,
-              harmonics: 0.4);
-          for (int i = 0; i < bass.length && start + i < n; i++) {
-            out[start + i] += bass[i] * 0.32;
-          }
-          if (s % 2 == 0) {
-            final pluck = _tone(melody[(s ~/ 2) % melody.length], 0.3,
-                harmonics: 0.35);
-            for (int i = 0; i < pluck.length && start + i < n; i++) {
-              out[start + i] += pluck[i] * 0.28;
-            }
-          }
+        // A# arpeggiated 0 – 5 – 4 – 3, 16s loop. Unique to roadhopper.
+        final notes = [233.08, 293.66, 349.23, 293.66, 391.99, 466.16, 587.32, 466.16, 349.23, 440.00, 523.25, 440.00, 311.12, 391.99, 466.16, 391.99];
+        final out = <double>[];
+        final noteLen = 16.0 / notes.length;
+        for (final n in notes) {
+          out.addAll(_tone(n, noteLen * 0.9, harmonics: 0.3));
+          final gap = List<double>.filled((_rate * noteLen * 0.1).round(), 0);
+          out.addAll(gap);
+        }
+        // Soft pad underneath
+        final pad = _padChord([233.08, 293.66, 349.23], 16.0);
+        for (int i = 0; i < out.length && i < pad.length; i++) {
+          out[i] += pad[i] * 0.3;
         }
         return out;
       });
+
 
   // ------------------------------------------------------------------ SFX
   Future<void> _play(Uint8List bytes) async {
