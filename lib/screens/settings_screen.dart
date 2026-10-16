@@ -6,6 +6,7 @@ import '../services/settings_service.dart';
 import '../theme/roadhopper_themes.dart';
 import '../theme/street_backdrop.dart';
 import 'pro_screen.dart';
+import '../transfer/transfer_ui.dart';
 
 /// Settings — sound, PRO, appearance, support, about. Theme-aware.
 class SettingsScreen extends StatefulWidget {
@@ -96,6 +97,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+              TransferSaveTile(gameSlug: 'roadhopper'),
                 _SectionTitle('Sound', t),
                 SettingRow(
                   theme: t,
