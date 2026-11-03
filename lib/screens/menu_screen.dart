@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:share_plus/share_plus.dart';
@@ -229,7 +230,7 @@ class _MenuScreenState extends State<MenuScreen> {
               color: _t.accent,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Text('PRO',
+            child: Text(defaultTargetPlatform == TargetPlatform.iOS ? '⭐' : 'PRO',
                 style: Hopper.label(12, theme: _t, color: _t.uiDeep)),
           ),
       ],
@@ -697,7 +698,7 @@ class _MenuScreenState extends State<MenuScreen> {
         const SizedBox(width: 14),
         btn(Icons.star, 'Rate', _requestReview),
         const SizedBox(width: 14),
-        btn(Icons.workspace_premium, 'PRO', _openPro),
+        btn(Icons.workspace_premium, defaultTargetPlatform == TargetPlatform.iOS ? '⭐ Gold Star' : 'PRO', _openPro),
       ],
     );
   }
