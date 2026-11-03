@@ -303,7 +303,9 @@ class _MenuScreenState extends State<MenuScreen> {
           _pickTile(
             selected: _s.difficulty == i,
             title: HopperSettings.difficultyNames[i],
-            subtitle: HopperSettings.difficultyBlurb[i],
+            subtitle: (defaultTargetPlatform == TargetPlatform.iOS
+                ? HopperSettings.difficultyBlurbIos
+                : HopperSettings.difficultyBlurb)[i],
             icon: [Icons.directions_walk, Icons.directions_run, Icons.bolt][i],
             locked: i == 2 && !_s.isPro,
             onTap: () {

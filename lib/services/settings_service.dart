@@ -34,6 +34,12 @@ class HopperSettings extends ChangeNotifier {
     'The classic crossing',
     'PRO · Fast lanes, tight clock',
   ];
+  // iOS variant: same blurbs without the PRO tag (Android keeps the original).
+  static const difficultyBlurbIos = [
+    'Relaxed pace, generous clock',
+    'The classic crossing',
+    'Fast lanes, tight clock',
+  ];
   static const modeNames = ['Classic', 'Endless', 'Score Attack'];
   static const modeBlurb = [
     'Fill all 5 homes to level up · 3 lives',
